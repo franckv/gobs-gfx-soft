@@ -1,0 +1,10 @@
+[package]
+name = "tinyrenderer"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+image = "0.25"
+gobs-resource = { path = "../gobs-engine/gobs-resource" }
+tracing = "0.1"
+tracing-subscriber = "0.3"
