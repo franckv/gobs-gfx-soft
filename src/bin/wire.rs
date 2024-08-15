@@ -2,17 +2,18 @@ use std::sync::Arc;
 
 use image::{ImageFormat, RgbaImage};
 
+use gobs_core::Color;
 use gobs_resource::geometry::{Mesh, VertexData};
 
 use tinyrenderer::*;
 
 #[tracing::instrument]
 pub fn draw_image() {
-    let mut img = RgbaImage::from_pixel(WIDTH, HEIGHT, BLACK);
+    let mut img = RgbaImage::from_pixel(WIDTH, HEIGHT, Color::BLACK.into());
 
     let mesh_data = load_model("assets/model.obj");
 
-    mesh(&mesh_data, &mut img, RED);
+    mesh(&mesh_data, &mut img, Color::RED);
 
     img.save_with_format("test.tga", ImageFormat::Tga)
         .expect("Save test");

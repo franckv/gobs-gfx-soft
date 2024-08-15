@@ -1,25 +1,52 @@
 use glam::Vec3;
 use image::{ImageFormat, RgbaImage};
 
-use gobs_resource::geometry::{Mesh, VertexData};
+use gobs_core::Color;
 
 use tinyrenderer::*;
 
 #[tracing::instrument]
 pub fn draw_image() {
-    let mut img = RgbaImage::from_pixel(WIDTH, HEIGHT, BLACK);
+    let mut img = RgbaImage::from_pixel(WIDTH, HEIGHT, Color::BLACK.into());
 
-    let v0 = Vec3::new(-1., -1., 0.);
-    let v1 = Vec3::new(1., -1., 0.);
-    let v2 = Vec3::new(0., 1., 0.);
+    let v0 = Vec3::new(-0.9, -0.3, 0.);
+    let v1 = Vec3::new(-0.5, 0.6, 0.);
+    let v2 = Vec3::new(-0.3, -0.2, 0.);
+    triangle(
+        v0,
+        v1,
+        v2,
+        &mut img,
+        Color::RED,
+        Color::GREEN,
+        Color::MAGENTA,
+    );
 
-    let mesh_data = Mesh::builder("wireframe")
-        .vertex(VertexData::builder().padding(false).position(v0).build())
-        .vertex(VertexData::builder().padding(false).position(v1).build())
-        .vertex(VertexData::builder().padding(false).position(v2).build())
-        .build();
+    let v0 = Vec3::new(0.8, -0.5, 0.);
+    let v1 = Vec3::new(0.5, -1., 0.);
+    let v2 = Vec3::new(-0.3, 0.8, 0.);
+    triangle(
+        v0,
+        v1,
+        v2,
+        &mut img,
+        Color::MAGENTA,
+        Color::YELLOW,
+        Color::WHITE,
+    );
 
-    mesh(&mesh_data, &mut img, RED);
+    let v0 = Vec3::new(0.8, 0.5, 0.);
+    let v1 = Vec3::new(0.2, 0.6, 0.);
+    let v2 = Vec3::new(0.3, 0.8, 0.);
+    triangle(
+        v0,
+        v1,
+        v2,
+        &mut img,
+        Color::GREEN,
+        Color::BLUE,
+        Color::YELLOW,
+    );
 
     img.save_with_format("test.tga", ImageFormat::Tga)
         .expect("Save test");
