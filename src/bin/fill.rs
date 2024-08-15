@@ -1,3 +1,4 @@
+use glam::Vec3;
 use image::{ImageFormat, RgbaImage};
 
 use tinyrenderer::*;
@@ -7,27 +8,32 @@ pub fn draw_image() {
     let mut img = RgbaImage::from_pixel(WIDTH, HEIGHT, BLACK);
 
     let mut c = 0;
-    for _ in 0..LOOPS {
-        c += fill(&mut img);
-    }
+    c += fill(&mut img);
 
-    tracing::info!(c, "Draws");
-    dot(CENTER_X, CENTER_Y, &mut img, WHITE);
+    tracing::info!(c, "Draw");
 
     img.save_with_format("test.tga", ImageFormat::Tga)
         .expect("Save test");
 }
 
 fn fill(img: &mut RgbaImage) -> u32 {
+    let center = Vec3::ZERO;
     let mut c = 0;
+
     for x in 0..WIDTH {
-        line(CENTER_X, CENTER_Y, x, 0, img, GREEN);
-        line(CENTER_X, CENTER_Y, x, HEIGHT - 1, img, RED);
+        let x = 2. * (x as f32 / WIDTH as f32) - 1.;
+        let pos = Vec3::new(x, 1., 0.);
+        line(center, pos, img, GREEN);
+        let pos = Vec3::new(x, -1., 0.);
+        line(center, pos, img, RED);
         c += 2;
     }
     for y in 0..HEIGHT {
-        line(CENTER_X, CENTER_Y, 0, y, img, BLUE);
-        line(CENTER_X, CENTER_Y, WIDTH - 1, y, img, YELLOW);
+        let y = 2. * (y as f32 / HEIGHT as f32) - 1.;
+        let pos = Vec3::new(1., y, 0.);
+        line(center, pos, img, BLUE);
+        let pos = Vec3::new(-1., y, 0.);
+        line(center, pos, img, YELLOW);
         c += 2;
     }
 

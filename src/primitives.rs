@@ -1,16 +1,29 @@
+use glam::Vec3;
 use image::{Rgba, RgbaImage};
 
+use crate::to_screen_coord;
+
 #[tracing::instrument(skip(img), level = "debug")]
-pub fn dot(x: u32, y: u32, img: &mut RgbaImage, color: Rgba<u8>) {
+pub fn dot(pos: Vec3, img: &mut RgbaImage, color: Rgba<u8>) {
+    let pos = to_screen_coord(pos, img.width(), img.height());
+
+    pixel(pos.x as u32, pos.y as u32, img, color);
+}
+
+#[tracing::instrument(skip(img), level = "debug")]
+pub fn pixel(x: u32, y: u32, img: &mut RgbaImage, color: Rgba<u8>) {
     img.put_pixel(x, y, color);
 }
 
 #[tracing::instrument(skip(img), level = "debug")]
-pub fn line(x0: u32, y0: u32, x1: u32, y1: u32, img: &mut RgbaImage, color: Rgba<u8>) {
-    let mut x0 = x0 as i32;
-    let mut x1 = x1 as i32;
-    let mut y0 = y0 as i32;
-    let mut y1 = y1 as i32;
+pub fn line(a: Vec3, b: Vec3, img: &mut RgbaImage, color: Rgba<u8>) {
+    let pos_a = to_screen_coord(a, img.width(), img.height());
+    let pos_b = to_screen_coord(b, img.width(), img.height());
+
+    let mut x0 = pos_a.x as i32;
+    let mut x1 = pos_b.x as i32;
+    let mut y0 = pos_a.y as i32;
+    let mut y1 = pos_b.y as i32;
 
     let mut dx = x1 - x0;
     let mut dy = y1 - y0;
@@ -40,7 +53,7 @@ pub fn line(x0: u32, y0: u32, x1: u32, y1: u32, img: &mut RgbaImage, color: Rgba
 
     if swapped {
         for x in x0..=x1 {
-            dot(y as u32, x as u32, img, color);
+            pixel(y as u32, x as u32, img, color);
 
             error += step;
             if error > dx {
@@ -50,7 +63,7 @@ pub fn line(x0: u32, y0: u32, x1: u32, y1: u32, img: &mut RgbaImage, color: Rgba
         }
     } else {
         for x in x0..=x1 {
-            dot(x as u32, y as u32, img, color);
+            pixel(x as u32, y as u32, img, color);
 
             error += step;
             if error > dx {

@@ -1,3 +1,4 @@
+use glam::Vec3;
 use image::{ImageFormat, RgbaImage};
 
 use tinyrenderer::*;
@@ -8,17 +9,21 @@ pub fn draw_image() {
 
     draw_centers(&mut img);
 
-    dot(CENTER_X, CENTER_Y, &mut img, WHITE);
-
     img.save_with_format("test.tga", ImageFormat::Tga)
         .expect("Save test");
 }
 
 fn draw_centers(img: &mut RgbaImage) {
-    line(CENTER_X, CENTER_Y, WIDTH - 1, HEIGHT - 1, img, RED);
-    line(CENTER_X, CENTER_Y, WIDTH - 1, 0, img, GREEN);
-    line(CENTER_X, CENTER_Y, 0, 0, img, BLUE);
-    line(CENTER_X, CENTER_Y, 0, HEIGHT - 1, img, YELLOW);
+    let center = Vec3::ZERO;
+    let top_left = Vec3::new(-1., 1., 0.);
+    let top_right = Vec3::new(1., 1., 0.);
+    let bottom_left = Vec3::new(-1., -1., 0.);
+    let bottom_right = Vec3::new(1., -1., 0.);
+
+    line(center, top_left, img, RED);
+    line(center, top_right, img, GREEN);
+    line(center, bottom_left, img, BLUE);
+    line(center, bottom_right, img, YELLOW);
 }
 
 fn main() {
