@@ -20,7 +20,7 @@ pub fn mesh(mesh: &Mesh, img: &mut Image, color: Color) {
 pub fn dot(pos: Vec3, img: &mut Image, color: Color) {
     let pos = to_screen_coord(pos, img.width(), img.height());
 
-    pixel(pos.x as u32, pos.y as u32, img, color);
+    pixel(pos.x, pos.y, img, color);
 }
 
 pub fn line_wire(v0: Vec3, v1: Vec3, img: &mut Image, color: Color) {
