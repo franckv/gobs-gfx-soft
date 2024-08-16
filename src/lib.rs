@@ -1,11 +1,16 @@
+mod depth;
 mod image;
+pub mod loader;
 pub mod math;
-pub mod mesh;
-pub mod primitives;
+mod mesh;
+mod primitives;
+mod shader;
 
+pub use depth::Depth;
 pub use image::Image;
-pub use mesh::{dot, mesh, triangle};
-pub use primitives::{line, pixel, rasterize, triangle_line};
+pub use mesh::{mesh, wire};
+pub use primitives::{dot, line, pixel, triangle, triangle_wire};
+pub use shader::FragmentShader;
 
 use tracing::Level;
 use tracing_subscriber::{fmt::format::FmtSpan, FmtSubscriber};
@@ -14,6 +19,7 @@ pub const WIDTH: u32 = 800;
 pub const HEIGHT: u32 = 600;
 
 pub const FILENAME: &str = "test.tga";
+pub const DFILENAME: &str = "depth.tga";
 
 pub fn init_logger() {
     let sub = FmtSubscriber::builder()

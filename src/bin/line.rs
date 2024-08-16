@@ -1,8 +1,8 @@
 use glam::Vec3;
 
 use gobs_core::{Color, ImageExtent2D};
+use gobs_resource::geometry::VertexData;
 
-use mesh::line_wire;
 use tinyrenderer::*;
 
 #[tracing::instrument]
@@ -15,16 +15,35 @@ pub fn draw_image() {
 }
 
 fn draw_centers(img: &mut Image) {
-    let center = Vec3::ZERO;
-    let top_left = Vec3::new(-1., 1., 0.);
-    let top_right = Vec3::new(1., 1., 0.);
-    let bottom_left = Vec3::new(-1., -1., 0.);
-    let bottom_right = Vec3::new(1., -1., 0.);
+    let center = VertexData::builder()
+        .position(Vec3::ZERO)
+        .padding(false)
+        .build();
+    let top_left = VertexData::builder()
+        .position(Vec3::new(-1., 1., 0.))
+        .padding(false)
+        .color(Color::RED)
+        .build();
+    let top_right = VertexData::builder()
+        .position(Vec3::new(1., 1., 0.))
+        .padding(false)
+        .color(Color::GREEN)
+        .build();
+    let bottom_left = VertexData::builder()
+        .position(Vec3::new(-1., -1., 0.))
+        .padding(false)
+        .color(Color::BLUE)
+        .build();
+    let bottom_right = VertexData::builder()
+        .position(Vec3::new(1., -1., 0.))
+        .padding(false)
+        .color(Color::YELLOW)
+        .build();
 
-    line_wire(center, top_left, img, Color::RED);
-    line_wire(center, top_right, img, Color::GREEN);
-    line_wire(center, bottom_left, img, Color::BLUE);
-    line_wire(center, bottom_right, img, Color::YELLOW);
+    line(center, top_left, img);
+    line(center, top_right, img);
+    line(center, bottom_left, img);
+    line(center, bottom_right, img);
 }
 
 fn main() {

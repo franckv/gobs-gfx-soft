@@ -1,40 +1,100 @@
 use glam::Vec3;
 
 use gobs_core::{Color, ImageExtent2D};
+use gobs_resource::geometry::VertexData;
 
 use tinyrenderer::*;
 
 #[tracing::instrument]
 pub fn draw_image() {
     let mut img = Image::new(ImageExtent2D::new(WIDTH, HEIGHT), Color::BLACK);
+    let mut depth = Depth::new(ImageExtent2D::new(WIDTH, HEIGHT));
 
-    let v0 = Vec3::new(-0.9, -0.3, 0.);
-    let v1 = Vec3::new(-0.5, 0.6, 0.);
-    let v2 = Vec3::new(-0.3, -0.2, 0.);
-    triangle(v0, v1, v2, &mut img, Color::RED, Color::GREEN, Color::BLUE);
+    let shader = FragmentShader::new();
 
-    let v0 = Vec3::new(0.8, -0.5, 0.);
-    let v1 = Vec3::new(0.5, -1., 0.);
-    let v2 = Vec3::new(-0.3, 0.8, 0.);
-    triangle(
-        v0,
-        v1,
-        v2,
-        &mut img,
-        Color::MAGENTA,
-        Color::YELLOW,
-        Color::WHITE,
-    );
+    let v0 = VertexData::builder()
+        .position(Vec3::new(-0.9, -0.3, 0.))
+        .color(Color::RED)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+    let v1 = VertexData::builder()
+        .position(Vec3::new(-0.5, 0.6, 0.))
+        .color(Color::GREEN)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+    let v2 = VertexData::builder()
+        .position(Vec3::new(-0.3, -0.2, 0.))
+        .color(Color::BLUE)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
 
-    let v0 = Vec3::new(0.8, 0.5, 0.);
-    let v1 = Vec3::new(0.2, 0.6, 0.);
-    let v2 = Vec3::new(0.3, 0.8, 0.);
-    triangle(v0, v1, v2, &mut img, Color::GREEN, Color::BLUE, Color::CYAN);
+    triangle(v0, v1, v2, &mut img, &mut depth, &shader);
 
-    let v0 = Vec3::new(-1.5, -0.9, 0.);
-    let v1 = Vec3::new(-0.1, -0.9, 0.);
-    let v2 = Vec3::new(-0.5, -0.5, 0.);
-    triangle(v0, v1, v2, &mut img, Color::RED, Color::GREEN, Color::BLUE);
+    let v0 = VertexData::builder()
+        .position(Vec3::new(0.8, -0.5, 0.))
+        .color(Color::MAGENTA)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+    let v1 = VertexData::builder()
+        .position(Vec3::new(0.5, -1., 0.))
+        .color(Color::YELLOW)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+    let v2 = VertexData::builder()
+        .position(Vec3::new(-0.3, 0.8, 0.))
+        .color(Color::WHITE)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+
+    triangle(v0, v1, v2, &mut img, &mut depth, &shader);
+
+    let v0 = VertexData::builder()
+        .position(Vec3::new(0.8, 0.5, 0.))
+        .color(Color::GREEN)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+    let v1 = VertexData::builder()
+        .position(Vec3::new(0.2, 0.6, 0.))
+        .color(Color::BLUE)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+    let v2 = VertexData::builder()
+        .position(Vec3::new(0.3, 0.8, 0.))
+        .color(Color::CYAN)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+
+    triangle(v0, v1, v2, &mut img, &mut depth, &shader);
+
+    let v0 = VertexData::builder()
+        .position(Vec3::new(-1.5, -0.9, 0.))
+        .color(Color::GREEN)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+    let v1 = VertexData::builder()
+        .position(Vec3::new(-0.1, -0.9, 0.))
+        .color(Color::RED)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+    let v2 = VertexData::builder()
+        .position(Vec3::new(-0.5, -0.5, 0.))
+        .color(Color::MAGENTA)
+        .normal(Vec3::Z)
+        .padding(false)
+        .build();
+
+    triangle(v0, v1, v2, &mut img, &mut depth, &shader);
 
     img.save(FILENAME).expect("Save image");
 }
