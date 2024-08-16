@@ -1,17 +1,16 @@
 use glam::UVec2;
-use image::RgbaImage;
 
 use gobs_core::Color;
 
-use crate::math::barycentric_coords;
+use crate::{math::barycentric_coords, Image};
 
 #[tracing::instrument(skip(img), level = "debug")]
-pub fn pixel(x: u32, y: u32, img: &mut RgbaImage, color: Color) {
-    img.put_pixel(x, y, color.into());
+pub fn pixel(x: u32, y: u32, img: &mut Image, color: Color) {
+    img.put_pixel(x, y, color);
 }
 
 #[tracing::instrument(skip(img), level = "debug")]
-pub fn line(a: UVec2, b: UVec2, img: &mut RgbaImage, color: Color) {
+pub fn line(a: UVec2, b: UVec2, img: &mut Image, color: Color) {
     let mut x0 = a.x as i32;
     let mut x1 = b.x as i32;
     let mut y0 = a.y as i32;
@@ -67,7 +66,7 @@ pub fn line(a: UVec2, b: UVec2, img: &mut RgbaImage, color: Color) {
 }
 
 #[tracing::instrument(skip(img), level = "debug")]
-pub fn triangle_line(v0: UVec2, v1: UVec2, v2: UVec2, img: &mut RgbaImage, color: Color) {
+pub fn triangle_line(v0: UVec2, v1: UVec2, v2: UVec2, img: &mut Image, color: Color) {
     line(v0, v1, img, color);
     line(v1, v2, img, color);
     line(v2, v0, img, color);
@@ -78,15 +77,15 @@ pub fn rasterize(
     v0: UVec2,
     v1: UVec2,
     v2: UVec2,
-    img: &mut RgbaImage,
+    img: &mut Image,
     color0: Color,
     color1: Color,
     color2: Color,
 ) {
-    let min_x = v0.x.min(v1.x).min(v2.x);
-    let min_y = v0.y.min(v1.y).min(v2.y);
-    let max_x = v0.x.max(v1.x).max(v2.x);
-    let max_y = v0.y.max(v1.y).max(v2.y);
+    let min_x = v0.x.min(v1.x).min(v2.x).min(img.width() - 1);
+    let min_y = v0.y.min(v1.y).min(v2.y).min(img.height() - 1);
+    let max_x = v0.x.max(v1.x).max(v2.x).min(img.width() - 1);
+    let max_y = v0.y.max(v1.y).max(v2.y).min(img.height() - 1);
 
     for x in min_x..=max_x {
         for y in min_y..=max_y {

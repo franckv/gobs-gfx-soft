@@ -1,22 +1,20 @@
 use glam::Vec3;
-use image::{ImageFormat, RgbaImage};
 
-use gobs_core::Color;
+use gobs_core::{Color, ImageExtent2D};
 
 use mesh::line_wire;
 use tinyrenderer::*;
 
 #[tracing::instrument]
 pub fn draw_image() {
-    let mut img = RgbaImage::from_pixel(WIDTH, HEIGHT, Color::BLACK.into());
+    let mut img = Image::new(ImageExtent2D::new(WIDTH, HEIGHT), Color::BLACK);
 
     draw_centers(&mut img);
 
-    img.save_with_format("test.tga", ImageFormat::Tga)
-        .expect("Save test");
+    img.save(FILENAME).expect("Save image");
 }
 
-fn draw_centers(img: &mut RgbaImage) {
+fn draw_centers(img: &mut Image) {
     let center = Vec3::ZERO;
     let top_left = Vec3::new(-1., 1., 0.);
     let top_right = Vec3::new(1., 1., 0.);

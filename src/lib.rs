@@ -1,8 +1,9 @@
+mod image;
 pub mod math;
 pub mod mesh;
 pub mod primitives;
 
-pub use math::to_screen_coord;
+pub use image::Image;
 pub use mesh::{dot, mesh, triangle};
 pub use primitives::{line, pixel, rasterize, triangle_line};
 
@@ -11,6 +12,8 @@ use tracing_subscriber::{fmt::format::FmtSpan, FmtSubscriber};
 
 pub const WIDTH: u32 = 800;
 pub const HEIGHT: u32 = 600;
+
+pub const FILENAME: &str = "test.tga";
 
 pub fn init_logger() {
     let sub = FmtSubscriber::builder()

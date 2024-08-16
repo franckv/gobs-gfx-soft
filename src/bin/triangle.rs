@@ -1,13 +1,12 @@
 use glam::Vec3;
-use image::{ImageFormat, RgbaImage};
 
-use gobs_core::Color;
+use gobs_core::{Color, ImageExtent2D};
 
 use tinyrenderer::*;
 
 #[tracing::instrument]
 pub fn draw_image() {
-    let mut img = RgbaImage::from_pixel(WIDTH, HEIGHT, Color::BLACK.into());
+    let mut img = Image::new(ImageExtent2D::new(WIDTH, HEIGHT), Color::BLACK);
 
     let v0 = Vec3::new(-0.9, -0.3, 0.);
     let v1 = Vec3::new(-0.5, 0.6, 0.);
@@ -48,8 +47,7 @@ pub fn draw_image() {
         Color::YELLOW,
     );
 
-    img.save_with_format("test.tga", ImageFormat::Tga)
-        .expect("Save test");
+    img.save(FILENAME).expect("Save image");
 }
 
 fn main() {
