@@ -1,12 +1,12 @@
 [package]
-name = "tinyrenderer"
+name = "gobs-gfx-soft"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 anyhow = "1.0"
 image = "0.25"
-glam = "0.28"
+glam = "0.29"
 gobs-core = { path = "../gobs-engine/gobs-core" }
 gobs-resource = { path = "../gobs-engine/gobs-resource" }
 tobj = "4.0"

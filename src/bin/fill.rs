@@ -1,9 +1,8 @@
 use glam::Vec3;
 
 use gobs_core::{Color, ImageExtent2D};
+use gobs_gfx_soft::*;
 use gobs_resource::geometry::VertexData;
-
-use tinyrenderer::*;
 
 #[tracing::instrument]
 pub fn draw_image() {

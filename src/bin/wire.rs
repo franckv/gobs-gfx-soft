@@ -1,6 +1,5 @@
 use gobs_core::{Color, ImageExtent2D};
-
-use tinyrenderer::*;
+use gobs_gfx_soft::*;
 
 #[tracing::instrument]
 pub fn draw_image() {
